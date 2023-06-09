@@ -1,0 +1,71 @@
+[tool.poetry]
+name = "lizard"
+version = "0.1.0"
+description = ""
+authors = ["Maurice Helmer", "Thomas Pohl"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.88.0"
+uvicorn = "^0.20.0"
+sqlalchemy = "^1.4.44"
+alembic = "^1.8.1"
+psycopg2-binary = "^2.9.5"
+pytest = "^7.2.0"
+pytest-docker = "^1.0.1"
+docker-compose = "^1.29.2"
+httpx = "^0.23.1"
+pytest-asyncio = "^0.20.3"
+autoflake = "^2.0.0"
+fastapi-utils = "^0.2.1"
+pytest-dependency = "^0.5.1"
+pytest-cov = "^4.0.0"
+gitpython = "^3.1.31"
+httpretty = "^1.1.4"
+asyncpg = "^0.27.0"
+pytest-mock = "^3.10.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.0.0"
+isort = "^5.10.1"
+mypy = "^0.991"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+# The following two options make sure to install all required type packages without asking for confirmation
+install_types = true
+non_interactive = true
+strict = true
+# Since we type as much as we are able to, we allow untyped calls for functions we just can't type (e.g. Model constructors)
+# This isn't a problem since we are obligied to type functions we write ourselves if not explicitly overridden
+disallow_untyped_calls = false
+
+[[tool.mypy.overrides]]
+module = [
+    'sqlalchemy.*',
+    'httpretty',
+    'pytest_docker.plugin'
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    'ignore:.*ssl.match_hostname.*:DeprecationWarning',
+    'ignore:.*ssl.PROTOCOL_TLS.*:DeprecationWarning',
+]
+
+[tool.coverage.run]
+branch = true
+source = ['backend']
+omit = [
+    '*__init__.py',
+    'backend/api/schemas/*',
+    'backend/database/*',
+    'backend/application.py',
+    'backend/settings.py',
+]

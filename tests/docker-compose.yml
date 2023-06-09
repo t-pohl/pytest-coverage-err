@@ -1,0 +1,21 @@
+# this docker-compose is just for the tests and will automatically be executed by pytest-docker
+# no volume is used here since we want every test run to start with a fresh environment
+version: '3.3'
+services:
+  postgres-lizard-tests:
+    image: postgres:15.1
+    container_name: 'lizard_db_tests'
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_DB: 'postgres'
+    ports:
+      - "7003:5432"
+    labels:
+      - "wud.watch=false"
+    restart: unless-stopped
+
+networks:
+  default:
+    name: web
+    external: true
